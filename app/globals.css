@@ -2,6 +2,11 @@
 
 html {
   font-size: clamp(15px, 0.0625rem + 0.78vw, 23px);
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
 }
 
 @font-face {
