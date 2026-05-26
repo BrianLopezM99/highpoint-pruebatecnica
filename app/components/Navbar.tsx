@@ -53,12 +53,36 @@ export default function Navbar() {
   ) => {
     event.preventDefault();
     const target = document.querySelector(href);
-    if (target) {
-      const top = target.getBoundingClientRect().top + window.scrollY - 90;
-      window.scrollTo({ top, behavior: "smooth" });
-    }
     setActiveSection(href);
     setIsOpen(false);
+    if (!(target instanceof HTMLElement)) return;
+
+    // Destino recalculado en cada frame: el layout de arriba sigue
+    // cambiando mientras bajamos (imágenes lazy + swap de la fuente),
+    // así que un único cálculo inicial deja la sección detrás del nav.
+    const nav = document.querySelector("nav");
+    const offset = (nav?.offsetHeight ?? 90) + 12;
+    const desiredTop = () =>
+      Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+
+    window.scrollTo({ top: desiredTop(), behavior: "smooth" });
+
+    // Reapuntar hasta que la posición se estabilice (o se agote el tiempo).
+    let lastY = Number.NaN;
+    let stableFrames = 0;
+    let frames = 0;
+    const settle = () => {
+      const y = window.scrollY;
+      const goal = desiredTop();
+      if (Math.abs(y - goal) > 1) {
+        window.scrollTo({ top: goal, behavior: "smooth" });
+      }
+      stableFrames = Math.abs(y - lastY) < 1 ? stableFrames + 1 : 0;
+      lastY = y;
+      frames += 1;
+      if (stableFrames < 8 && frames < 180) requestAnimationFrame(settle);
+    };
+    requestAnimationFrame(settle);
   };
 
   return (
