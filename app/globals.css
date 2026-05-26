@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+html {
+  font-size: clamp(15px, 0.0625rem + 0.78vw, 23px);
+}
+
+@font-face {
+  font-family: "Cities Typeface";
+  src: url("/fonts/cities-typeface.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-hp-leon-dorado: #848484;
+  --color-hp-leon-azul: #29362f;
+  --color-green-highpoint: #29362f;
+  --color-amarillo-claro: #f5efe0;
+
+  --font-sans: var(--font-montserrat-google), "Montserrat", ui-sans-serif,
+    system-ui, sans-serif;
+  --font-montserrat: var(--font-montserrat-google), "Montserrat", ui-sans-serif,
+    system-ui, sans-serif;
+  --font-cities-typeface: "Cities Typeface", ui-serif, Georgia, serif;
+}
+
+@layer utilities {
+  .hp-title {
+    font-family: var(--font-cities-typeface);
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .hp-body {
+    font-family: var(--font-montserrat);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.52;
+    letter-spacing: 0;
+    text-align: center;
+  }
+}
+
+.banner-background {
+  background-image: url("/images/queretaro/highpointheaderv.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ubicacion-background {
+  background-color: #29362f;
+  background-image: url("/images/queretaro/fondoubicacion.png");
+  background-size: 101%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+body {
+  background: #ffffff;
+  color: #171717;
+  font-family: var(--font-montserrat);
+}
+
+.hp-fade-in {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.hp-fade-in[data-dir="up"] {
+  transform: translateY(34px);
+}
+.hp-fade-in[data-dir="down"] {
+  transform: translateY(-34px);
+}
+.hp-fade-in[data-dir="left"] {
+  transform: translateX(-44px);
+}
+.hp-fade-in[data-dir="right"] {
+  transform: translateX(44px);
+}
+.hp-fade-in[data-dir="zoom"] {
+  transform: scale(0.93);
+}
+.hp-fade-in[data-dir="fade"] {
+  transform: none;
+}
+
+.hp-fade-in.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.hp-fade-in[data-dir="fade"].is-visible {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-fade-in,
+  .hp-fade-in[data-dir] {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes hp-swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hp-swap-img-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hp-swap {
+  animation: hp-swap-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.hp-swap-img {
+  animation: hp-swap-img-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-swap,
+  .hp-swap-img {
+    animation: none;
+  }
+}
